@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Rides</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Available Rides</h1>
+    {% if rides %}
+        <ul>
+            {% for ride in rides %}
+                <li>
+                    <strong>{{ ride.name }}</strong> is offering a ride in a {{ ride.vehicle }}.<br>
+                    From: {{ ride.from }}<br>
+                    To: {{ ride.to }}<br>
+                    Seats available: {{ ride.seats }}
+                    <form action="/book/{{ loop.index0 }}" method="POST" style="display:inline;">
+                        <button type="submit" {% if ride.seats == 0 %}disabled{% endif %}>Book Ride</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No rides available at the moment.</p>
+    {% endif %}
+    <br>
+    <a href="/">Back to Home</a>
+</body>
+</html>

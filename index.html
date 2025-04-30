@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Sharing</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 80vh;
+            padding: 20px;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        form h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            color: #4CAF50;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input, textarea, select, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .listings {
+            width: 100%;
+            max-width: 800px;
+        }
+        .listing {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .listing img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .listing h3 {
+            margin: 0 0 10px;
+            color: #4CAF50;
+        }
+        .listing p {
+            margin: 5px 0;
+        }
+        .listing button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Home Sharing Platform
+    </header>
+    <main>
+        <form action="/post" method="POST" enctype="multipart/form-data">
+            <h2>Post Your Home for Rent</h2>
+            <label for="title">Home Title:</label>
+            <input type="text" id="title" name="title" placeholder="Enter home title" required>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" placeholder="Enter a brief description" required></textarea>
+
+            <label for="days">Available Days:</label>
+            <input type="number" id="days" name="days" placeholder="Enter number of days" required>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" placeholder="Enter home address" required>
+
+            <label for="image_file">Upload Image:</label>
+            <input type="file" id="image_file" name="image_file" accept="image/*" required>
+
+            <button type="submit">Post Listing</button>
+        </form>
+
+        <div class="listings">
+            <h2>Available Listings</h2>
+            {% for listing in listings %}
+            <div class="listing">
+                <img src="{{ listing.image_url }}" alt="Home Image">
+                <h3>{{ listing.title }}</h3>
+                <p><strong>Description:</strong> {{ listing.description }}</p>
+                <p><strong>Address:</strong> {{ listing.address }}</p>
+                <p><strong>Available for:</strong> {{ listing.days }} days</p>
+                <form action="/book/{{ loop.index0 }}" method="POST">
+                    <button type="submit">Book Now</button>
+                </form>
+            </div>
+            {% else %}
+            <p>No listings available yet. Be the first to post!</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>
